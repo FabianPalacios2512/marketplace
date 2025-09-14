@@ -33,7 +33,7 @@ services:
           type: pserv
           name: unieats-db
           property: password
-
+      
       # --- Credenciales de Correo (Manual y Segura) ---
       # Render creará estos campos para que los llenes manualmente en su web.
       - key: MAIL_USERNAME
