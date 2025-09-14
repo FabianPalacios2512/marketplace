@@ -3,7 +3,6 @@ services:
   - type: pserv
     name: unieats-db
     plan: free
-    env: postgres
 
   # --- Servicio 2: La Aplicación Web Java/Docker ---
   - type: web
