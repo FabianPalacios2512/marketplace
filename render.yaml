@@ -1,7 +1,7 @@
 services:
   - type: pserv
     name: unieats-db
-    plan: free
+    plan: free 
 
   - type: web
     name: unieats-app
