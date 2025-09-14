@@ -3,7 +3,7 @@ services:
   - type: pserv
     name: unieats-db
     plan: free
-    # Aquí puedes eliminar las líneas "database" y "postgresMajorVersion"
+    # Elimina las líneas "runtime" y "startCommand" aquí
 
   # --- Servicio 2: La Aplicación Web Java/Docker ---
   - type: web
@@ -17,18 +17,13 @@ services:
       # --- Conexión a La Base de Datos (Automática) ---
       - key: SPRING_DATASOURCE_URL
         value: jdbc:postgresql://${unieats-db.hostname}:${unieats-db.port}/${unieats-db.database}
-
-      - key: SPRING_DATASOURCE_USERNAME
-        fromService:
-          type: pserv
-          name: unieats-db
-          property: user
-
-      - key: SPRING_DATASOURCE_PASSWORD
-        fromService:
-          type: pserv
-          name: unieats-db
-          property: password
+      
+      # Nota: En Render, la forma más común de obtener usuario y contraseña de la base de datos es a través de sus propiedades "user" y "password".
+      # La forma correcta de referenciarlos en un render.yaml es directamente en el `value` de la URL, o si las necesitas por separado,
+      # lo mejor es ir al panel de Render, copiar los valores y agregarlos como variables de entorno manuales para evitar errores con las propiedades.
+      # La URL de arriba debería ser suficiente si tu aplicación puede parsear el usuario y la contraseña de ahí.
+      # Si tu aplicación requiere las variables de usuario y contraseña por separado, deberás configurarlas manualmente en la interfaz de Render después de crear la base de datos.
+      # Lo que tenías de `fromService` para user y password no es un método de propiedad válido para este tipo de servicio.
 
       # --- Credenciales de Correo (Manual y Segura) ---
       # Render creará estos campos para que los llenes manualmente en su web.
