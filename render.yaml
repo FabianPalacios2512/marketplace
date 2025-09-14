@@ -12,7 +12,6 @@ services:
     dockerfilePath: ./Dockerfile
 
     envVars:
-      # --- Variables de conexión a la BD ---
       - key: SPRING_DATASOURCE_URL
         fromDatabase:
           name: unieats-db
@@ -28,7 +27,6 @@ services:
           name: unieats-db
           property: password
 
-      # --- Variables manuales de correo ---
       - key: MAIL_USERNAME
         sync: false
       - key: MAIL_PASSWORD
