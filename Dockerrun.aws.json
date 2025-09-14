@@ -1,0 +1,27 @@
+{
+  "AWSEBDockerrunVersion": "2",
+  "Authentication": {
+    "Bucket": "my-s3-bucket",
+    "Key": "path/to/my/dockercfg/config.json"
+  },
+  "containerDefinitions": [
+    {
+      "name": "app",
+      "image": "fasa2/marketplace:latest",
+      "essential": true,
+      "memory": 128,
+      "ports": [
+        {
+          "hostPort": 80,
+          "containerPort": 8080
+        }
+      ]
+    },
+    {
+      "name": "db",
+      "image": "postgres:15.4-alpine",
+      "essential": true,
+      "memory": 128
+    }
+  ]
+}

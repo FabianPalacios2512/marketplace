@@ -1,35 +1,24 @@
-# --- Etapa de Construcción (Build Stage) ---
-# Usamos una imagen de Maven con Java 17 para compilar el proyecto
-FROM maven:3.8.5-openjdk-17 AS build
-
-# Establecemos el directorio de trabajo dentro del contenedor
+# ---------- ETAPA 1: Construcción ----------
+FROM maven:3.9.6-eclipse-temurin-21 AS builder
 WORKDIR /app
 
-# Copiamos primero el archivo pom.xml para aprovechar el caché de Docker
+# Copiar pom.xml y bajar dependencias
 COPY pom.xml .
-
-# Descargamos todas las dependencias
 RUN mvn dependency:go-offline
 
-# Copiamos todo el código fuente del proyecto
+# Copiar todo el código y compilar
 COPY src ./src
-
-# Empaquetamos la aplicación en un archivo .jar, omitiendo los tests
 RUN mvn clean package -DskipTests
 
-
-# --- Etapa de Ejecución (Run Stage) ---
-# Usamos una imagen ligera de Java 17 solo con el entorno de ejecución (JRE)
-FROM eclipse-temurin:17-jre-focal
-
-# Establecemos el directorio de trabajo
+# ---------- ETAPA 2: Ejecución ----------
+FROM eclipse-temurin:21-jdk-jammy
 WORKDIR /app
 
-# Copiamos el .jar generado en la etapa de construcción
-COPY --from=build /app/target/*.jar app.jar
+# Copiar el jar generado desde la etapa 1
+COPY --from=builder /app/target/*.jar app.jar
 
-# Exponemos el puerto en el que corre tu aplicación Spring Boot
-EXPOSE 8081
+# Puerto en el que corre Spring Boot
+EXPOSE 8080
 
-# Comando para ejecutar la aplicación cuando el contenedor inicie
+# Comando de inicio
 ENTRYPOINT ["java", "-jar", "app.jar"]
