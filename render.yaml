@@ -3,11 +3,7 @@ services:
   - type: pserv
     name: unieats-db
     plan: free
-    # Estas propiedades deben estar al mismo nivel que 'name' y 'plan'
-    database:
-      name: unieats
-      user: unieats_user
-    postgresMajorVersion: 14
+    env: postgres
 
   # --- Servicio 2: La Aplicación Web Java/Docker ---
   - type: web
@@ -16,26 +12,24 @@ services:
     runtime: docker
     dockerfilePath: ./Dockerfile
 
-    # --- Variables de Entorno ---
     envVars:
-      # --- Conexión a la Base de Datos (Automática) ---
+      # --- Conexión a la Base de Datos ---
       - key: SPRING_DATASOURCE_URL
-        value: jdbc:postgresql://${unieats-db.hostport}/${unieats-db.database}
+        fromDatabase:
+          name: unieats-db
+          property: connectionString
 
       - key: SPRING_DATASOURCE_USERNAME
-        fromService:
-          type: pserv
+        fromDatabase:
           name: unieats-db
           property: user
 
       - key: SPRING_DATASOURCE_PASSWORD
-        fromService:
-          type: pserv
+        fromDatabase:
           name: unieats-db
           property: password
-      
-      # --- Credenciales de Correo (Manual y Segura) ---
-      # Render creará estos campos para que los llenes manualmente en su web.
+
+      # --- Credenciales de Correo (manuales) ---
       - key: MAIL_USERNAME
         sync: false
       - key: MAIL_PASSWORD
