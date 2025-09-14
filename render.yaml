@@ -3,7 +3,6 @@ services:
   - type: pserv
     name: unieats-db
     plan: free
-    # Estas propiedades deben estar al mismo nivel que 'name' y 'plan'
     database:
       name: unieats
       user: unieats_user
