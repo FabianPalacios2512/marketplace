@@ -1,10 +1,10 @@
 services:
-  # --- Servicio 1: La Base de Datos PostgreSQL ---
+  # --- Servicio 1: Base de Datos PostgreSQL ---
   - type: pserv
     name: unieats-db
     plan: free
 
-  # --- Servicio 2: La Aplicación Web Java/Docker ---
+  # --- Servicio 2: Aplicación Spring Boot con Docker ---
   - type: web
     name: unieats-app
     plan: free
@@ -12,7 +12,7 @@ services:
     dockerfilePath: ./Dockerfile
 
     envVars:
-      # --- Conexión a la Base de Datos ---
+      # --- Variables de conexión a la BD ---
       - key: SPRING_DATASOURCE_URL
         fromDatabase:
           name: unieats-db
@@ -28,7 +28,7 @@ services:
           name: unieats-db
           property: password
 
-      # --- Credenciales de Correo (manuales) ---
+      # --- Variables manuales de correo ---
       - key: MAIL_USERNAME
         sync: false
       - key: MAIL_PASSWORD
