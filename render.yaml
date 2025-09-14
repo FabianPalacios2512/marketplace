@@ -3,7 +3,7 @@ services:
   - type: pserv
     name: unieats-db
     plan: free
-    # Las siguientes propiedades deben estar al mismo nivel que 'name' y 'plan'
+    # These properties must be at the same level as 'name' and 'plan'
     database:
       name: unieats
       user: unieats_user
@@ -16,9 +16,9 @@ services:
     runtime: docker
     dockerfilePath: ./Dockerfile
 
-    # --- Variables de Entorno ---
+    # --- Environment Variables ---
     envVars:
-      # --- Conexión a la Base de Datos (Automática) ---
+      # --- Database Connection (Automatic) ---
       - key: SPRING_DATASOURCE_URL
         value: jdbc:postgresql://${unieats-db.hostport}/${unieats-db.database}
 
@@ -33,9 +33,9 @@ services:
           type: pserv
           name: unieats-db
           property: password
-      
-      # --- Credenciales de Correo (Manual y Segura) ---
-      # Render creará estos campos para que los llenes manualmente en su web.
+
+      # --- Mail Credentials (Manual and Secure) ---
+      # Render will create these fields for you to fill in manually on its website.
       - key: MAIL_USERNAME
         sync: false
       - key: MAIL_PASSWORD
