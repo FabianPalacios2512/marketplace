@@ -1,7 +1,11 @@
 services:
   - type: pserv
     name: unieats-db
-    plan: free 
+    plan: free
+    disk:
+      name: data
+      mountPath: /var/lib/postgresql/data
+      sizeGB: 1
 
   - type: web
     name: unieats-app
