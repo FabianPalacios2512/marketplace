@@ -1,10 +1,9 @@
-# Blueprint de Render para la aplicación Uni-Eats
-
 services:
   # --- Servicio 1: La Base de Datos PostgreSQL ---
   - type: pserv
     name: unieats-db
     plan: free
+    # Las siguientes propiedades deben estar al mismo nivel que 'name' y 'plan'
     database:
       name: unieats
       user: unieats_user
@@ -22,11 +21,13 @@ services:
       # --- Conexión a la Base de Datos (Automática) ---
       - key: SPRING_DATASOURCE_URL
         value: jdbc:postgresql://${unieats-db.hostport}/${unieats-db.database}
+
       - key: SPRING_DATASOURCE_USERNAME
         fromService:
           type: pserv
           name: unieats-db
           property: user
+
       - key: SPRING_DATASOURCE_PASSWORD
         fromService:
           type: pserv
